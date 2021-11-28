@@ -8,6 +8,11 @@ from datetime import datetime
 from glob import glob
 import os
 from werkzeug.datastructures import FileStorage
+from wsgiref import simple_server
+
+
+os.putenv('LANG', 'en_US.UTF-8')
+os.putenv('LC_ALL', 'en_US.UTF-8')
 
 # Work flow
 # ===================================
@@ -264,5 +269,12 @@ def predict_batch_files():
     # ------------------------------------ Displaying the output -----------------------------------
     return render_template("result_page.html", type="batch_files", resultStatus=resultStatus)
 
+#if __name__ == "__main__":
+    #app.run(debug=True,host ='0.0.0.0', port=5102)
+
 if __name__ == "__main__":
-    app.run(debug=True,host ='0.0.0.0', port=5102)
+    port = int(os.getenv("PORT"))
+    #clApp = ClientApp()
+    host = '0.0.0.0'
+    httpd = simple_server.make_server(host=host,port=port, app=app)
+    httpd.serve_forever()
